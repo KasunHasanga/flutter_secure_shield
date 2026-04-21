@@ -93,18 +93,18 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Widget _buildWelcome() {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.shield_outlined, size: 80, color: Color(0xFF00FF88)),
-          const SizedBox(height: 24),
-          const Text(
+          Icon(Icons.shield_outlined, size: 80, color: Color(0xFF00FF88)),
+          SizedBox(height: 24),
+          Text(
             'Advanced Security Scanner',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 8),
-          const Text(
+          SizedBox(height: 8),
+          Text(
             'Tap Run Scan to check device security',
             style: TextStyle(color: Colors.white54),
           ),
@@ -122,7 +122,7 @@ class _ScanScreenState extends State<ScanScreen> {
       children: [
         // Overall status card
         Card(
-          color: color.withOpacity(0.15),
+          color: color.withValues(alpha: 0.15),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(color: color, width: 1.5),
@@ -186,7 +186,7 @@ class _ScanScreenState extends State<ScanScreen> {
       color: const Color(0xFF141824),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.2),
+          backgroundColor: color.withValues(alpha: 0.2),
           child: Icon(
             check.detected ? Icons.warning : Icons.check,
             color: color,
@@ -202,7 +202,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
+                  color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: color, width: 0.5),
                 ),
@@ -223,8 +223,8 @@ class _ScanScreenState extends State<ScanScreen> {
     return Chip(
       label: Text(label,
           style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold)),
-      backgroundColor: color.withOpacity(0.15),
-      side: BorderSide(color: color.withOpacity(0.5)),
+      backgroundColor: color.withValues(alpha: 0.15),
+      side: BorderSide(color: color.withValues(alpha: 0.5)),
       padding: EdgeInsets.zero,
       visualDensity: VisualDensity.compact,
     );

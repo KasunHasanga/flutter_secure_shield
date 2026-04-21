@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import 'models/detection_result.dart';
 import 'models/check_type.dart';
-import 'models/threat_level.dart';
 
 /// SecureShield — Advanced root and jailbreak detection plugin.
 ///
