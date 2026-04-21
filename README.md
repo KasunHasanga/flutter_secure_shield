@@ -57,7 +57,7 @@ dependencies:
 
 ### Full Scan
 ```dart
-import 'package:flutter_secure_shield/secure_shield.dart';
+import 'package:flutter_secure_shield/flutter_secure_shield.dart';
 
 // Configure (optional)
 await SecureShield.configure(
