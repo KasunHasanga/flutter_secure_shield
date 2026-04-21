@@ -18,7 +18,7 @@ public class SecureShieldPlugin: NSObject, FlutterPlugin {
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(
-            name: "com.secureshield/secure_shield",
+            name: "com.secureshield/flutter_secure_shield",
             binaryMessenger: registrar.messenger()
         )
         let instance = SecureShieldPlugin()

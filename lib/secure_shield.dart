@@ -1,4 +1,4 @@
-library secure_shield;
+library flutter_secure_shield;
 
 export 'src/secure_shield.dart';
 export 'src/models/detection_result.dart';

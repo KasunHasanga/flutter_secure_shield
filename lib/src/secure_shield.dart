@@ -16,7 +16,7 @@ import 'models/threat_level.dart';
 /// ```
 class SecureShield {
   static const MethodChannel _channel =
-      MethodChannel('com.secureshield/secure_shield');
+      MethodChannel('com.secureshield/flutter_secure_shield');
 
   // ─── Full Scan ───────────────────────────────────────────────────
 

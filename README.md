@@ -49,7 +49,7 @@ Advanced root detection and jailbreak detection Flutter plugin for Android and i
 
 ```yaml
 dependencies:
-  secure_shield:
+  flutter_secure_shield:
     path: ./secure_shield  # or from pub.dev
 ```
 
@@ -57,7 +57,7 @@ dependencies:
 
 ### Full Scan
 ```dart
-import 'package:secure_shield/secure_shield.dart';
+import 'package:flutter_secure_shield/secure_shield.dart';
 
 // Configure (optional)
 await SecureShield.configure(
@@ -159,6 +159,10 @@ Minimum iOS: **13.0**
 | `critical` | CRITICAL | Active root/jailbreak, Magisk, Cydia, hooking |
 
 Use `result.overallThreatLevel.isCompromised` to check if level is `high` or `critical`.
+
+## Repository
+
+[GitHub - KasunHasanga/flutter_secure_shield](https://github.com/KasunHasanga/flutter_secure_shield)
 
 ## License
 
