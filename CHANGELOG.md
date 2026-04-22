@@ -1,3 +1,8 @@
+## 1.0.1
+
+*   Removed unused platform support (macOS, Windows, Linux, Web) to focus on Android and iOS.
+*   Added Swift Package Manager (SPM) support for iOS.
+
 ## 1.0.0
 
 *   Initial release of SecureShield.
