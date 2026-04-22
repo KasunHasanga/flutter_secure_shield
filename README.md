@@ -1,169 +1,125 @@
-# 🛡 SecureShield
+# 🛡️ SecureShield
 
-Advanced root detection and jailbreak detection Flutter plugin for Android and iOS.
+Advanced root detection and jailbreak detection Flutter plugin with comprehensive security checks for Android and iOS.
 
-## Features
+[![pub package](https://img.shields.io/pub/v/flutter_secure_shield.svg)](https://pub.dev/packages/flutter_secure_shield)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-### Android Root Detection
-| Check | Description | Threat Level |
-|-------|-------------|-------------|
-| `suBinaries` | Scans 13+ known su binary locations | High |
-| `suExists` | Checks if `su` is accessible via PATH | High |
-| `rwPaths` | Detects writable system paths | High |
-| `testKeys` | Build signed with test-keys | High |
-| `dangerousProps` | Dangerous system properties (ro.debuggable etc.) | Medium |
-| `busyboxInstalled` | BusyBox binary present | Medium |
-| `magiskDetected` | Magisk + Magisk-Delta + KernelSU detection | Critical |
-| `xposedDetected` | Xposed framework via stack trace + file scan | Critical |
-| `hookingFramework` | Frida, Substrate, other hooking libs | Critical |
-| `seLinuxBypass` | SELinux enforcing mode bypassed | High |
-| `packageManager` | 18+ root/hack package names scanned | Medium |
-| `buildTagsTest` | eng/userdebug build type detection | High |
-| `adbEnabled` | ADB enabled via system settings | Medium |
-| `developerOptions` | Developer options enabled | Low |
-| `unknownSources` | Unknown sources installation enabled | Low |
+SecureShield provides a robust set of security checks to help you protect your Flutter applications from compromised environments, unauthorized debugging, and malicious tools.
 
-### iOS Jailbreak Detection
-| Check | Description | Threat Level |
-|-------|-------------|-------------|
-| `cydiaSources` | Cydia/Sileo/Zbra URL scheme check | Critical |
-| `jailbrokenPaths` | 30+ jailbreak file/directory paths | Critical |
-| `sandboxViolation` | Attempts to write outside sandbox | Critical |
-| `substrateDylib` | MobileSubstrate/Substitute/libhooker dylibs | Critical |
-| `openSSHInstalled` | OpenSSH daemon files present | High |
-| `filePermissions` | Unexpected write permissions on system paths | High |
-| `dyldEnvironment` | Suspicious DYLD_INSERT_LIBRARIES env vars | High |
-| `syscallCheck` | fork() succeeds (jailbreak indicator) | High |
-| `unsignedCode` | App running from non-standard location | High |
-| `urlSchemes` | Suspicious jailbreak tool URL schemes | Medium |
+## ✨ Features
 
-### Cross-Platform
-| Check | Description | Threat Level |
-|-------|-------------|-------------|
-| `emulatorDetected` | Emulator/simulator (configurable) | Low |
-| `debuggerAttached` | Debugger/tracer attached (configurable) | Low |
-| `vpnActive` | VPN connection detected | Low |
-| `proxyDetected` | HTTP/HTTPS proxy configured | Medium |
+- 🔍 **Root & Jailbreak Detection**: Deep system checks for `su` binaries, Cydia, and other common indicators.
+- 💻 **Emulator Detection**: Detects if the app is running on a virtual device or simulator.
+- 🐛 **Debugger Protection**: Checks if a debugger is attached to the process.
+- 🛠️ **Reverse Engineering Tools**: Detects Magisk, Xposed (Android), and Cydia (iOS).
+- 🪝 **Hooking Frameworks**: Detects substrate and other hooking framework signatures.
+- 🏗️ **Build Integrity**: Checks for test-keys, dangerous props, and sandbox violations.
+- ⚙️ **System Settings**: Detects if ADB is enabled, Developer Options are active, or Unknown Sources are allowed (Android).
+- 🌐 **Network Security**: Checks for active VPN connections and proxy configurations.
+- 📊 **Threat Scoring**: Provides a comprehensive `ThreatLevel` (None, Low, Medium, High, Critical).
+- ⚙️ **Configurable**: Define your own thresholds and custom paths to scan.
 
-## Installation
+## 🚀 Installation
+
+Add `flutter_secure_shield` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_secure_shield:
-    path: ./secure_shield  # or from pub.dev
+  flutter_secure_shield: ^1.0.0
 ```
 
-## Usage
+Run `flutter pub get` to install.
 
-### Full Scan
+## 🛠️ How It Works
+
+SecureShield uses a combination of **Native Method Channels** and deep system calls to verify device integrity:
+
+- **Android**: Scans for known root binaries, check build tags (test-keys), detects package managers like Magisk, and monitors for hooking framework signatures in the runtime.
+- **iOS**: Checks for file system permissions in restricted areas, looks for common jailbreak apps (Cydia, Sileo, etc.), and tests for `fork()` capabilities which are usually restricted in the sandbox.
+- **Unified API**: All native data is mapped into a consistent Dart model, making it easy to handle security logic in your app.
+
+## 📖 Usage
+
+### Initial Configuration (Optional)
+
+You can configure the plugin early in your app's lifecycle:
+
 ```dart
 import 'package:flutter_secure_shield/flutter_secure_shield.dart';
 
-// Configure (optional)
-await SecureShield.configure(
-  failOnEmulator: false,
-  failOnDebugger: false,
-  customSuPaths: ['/data/custom/su'],
-  customJailbreakPaths: ['/private/var/custom'],
-);
-
-// Run full scan
-final result = await SecureShield.performFullScan();
-
-if (!result.isSafe) {
-  print('Threat level: ${result.overallThreatLevel.label}');
-  print('Rooted: ${result.isRooted}');
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   
-  for (final threat in result.detectedThreats) {
-    print('- ${threat.type.displayName}: ${threat.description}');
-  }
+  await SecureShield.configure(
+    failOnEmulator: false, // If true, emulators will be flagged as high threat
+    failOnDebugger: true,   // Treat debuggers as high threat
+    customSuPaths: ['/data/local/xbin/custom_su'],
+  );
+  
+  runApp(MyApp());
 }
 ```
 
-### Quick Checks
+### Performing a Full Security Scan
+
+The recommended way to check device integrity:
+
 ```dart
-final isRooted = await SecureShield.isRooted();
-final isEmulator = await SecureShield.isEmulator();
-final isDebugged = await SecureShield.isDebuggerAttached();
+final DetectionResult result = await SecureShield.performFullScan();
 
-// Android-specific
-final magisk = await SecureShield.isMagiskDetected();
-final hooking = await SecureShield.isHookingFrameworkDetected();
+if (!result.isSafe) {
+  print('Device is compromised!');
+  print('Overall threat level: ${result.overallThreatLevel.label}');
+  
+  for (var threat in result.detectedThreats) {
+    print('Detected: ${threat.type.displayName} - ${threat.description}');
+  }
+} else {
+  print('Device is secure!');
+}
+```
 
-// iOS-specific
-final cydia = await SecureShield.isCydiaInstalled();
+### Individual Security Checks
 
-// Network
-final vpn = await SecureShield.isVpnActive();
-final proxy = await SecureShield.isProxyDetected();
+You can also run specific checks if you don't need a full report:
+
+```dart
+bool isRooted = await SecureShield.isRooted();
+bool isEmulator = await SecureShield.isEmulator();
+bool isVpnActive = await SecureShield.isVpnActive();
+bool IsDebuggerAttached = await SecureShield.isDebuggerAttached();
 ```
 
 ### Selective Checks
+
+Run only the checks you care about to save performance:
+
 ```dart
-final results = await SecureShield.runChecks([
-  CheckType.magiskDetected,
-  CheckType.xposedDetected,
-  CheckType.debuggerAttached,
+final List<CheckResult> results = await SecureShield.runChecks([
+  CheckType.isRooted,
+  CheckType.isVpnActive,
+  CheckType.isDebuggerAttached,
 ]);
 ```
 
-### Blocking Compromised Devices
-```dart
-void initState() {
-  super.initState();
-  _checkSecurity();
-}
+## 📊 Threat Levels
 
-Future<void> _checkSecurity() async {
-  final result = await SecureShield.performFullScan();
-  
-  if (result.overallThreatLevel.isCompromised) {
-    // Block access, show warning, or wipe local data
-    Navigator.pushReplacementNamed(context, '/blocked');
-  }
-}
-```
+| Level | Description | Recommended Action |
+| :--- | :--- | :--- |
+| **None** | No threats detected. | Proceed normally. |
+| **Low** | Minor issues (e.g., Debugger attached in dev). | Log or warn user. |
+| **Medium** | Indicators of potential risk (e.g., VPN/Proxy). | Monitor or request user action. |
+| **High** | Device is likely compromised or running in emulator. | Restrict sensitive features. |
+| **Critical** | Confirmed Root/Jailbreak or Hooking framework. | Terminate app or block access. |
 
-## Android Setup
+## 🛡️ Best Practices
 
-Add to `AndroidManifest.xml`:
-```xml
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-```
+1. **Scan on Startup**: Perform a scan before allowing access to sensitive data.
+2. **Scan Before Transactions**: Verify device integrity before processing payments or sensitive operations.
+3. **Don't Just Exit**: Instead of just crashing, show a user-friendly message explaining why the app won't run.
+4. **Use `ThreatLevel`**: Base your app logic on the `overallThreatLevel` rather than individual trues/falses for better flexibility.
 
-Minimum SDK: **21**
+## 📄 License
 
-## iOS Setup
-
-Add to `Info.plist` for URL scheme checks:
-```xml
-<key>LSApplicationQueriesSchemes</key>
-<array>
-  <string>cydia</string>
-  <string>sileo</string>
-  <string>zbra</string>
-  <string>filza</string>
-</array>
-```
-
-Minimum iOS: **13.0**
-
-## Threat Levels
-
-| Level | Value | Meaning |
-|-------|-------|---------|
-| `none` | SECURE | No threats detected |
-| `low` | LOW RISK | Dev options, emulator, VPN |
-| `medium` | MEDIUM RISK | Unknown sources, proxy, suspicious packages |
-| `high` | HIGH RISK | Test keys, writable paths, OpenSSH |
-| `critical` | CRITICAL | Active root/jailbreak, Magisk, Cydia, hooking |
-
-Use `result.overallThreatLevel.isCompromised` to check if level is `high` or `critical`.
-
-## Repository
-
-[GitHub - KasunHasanga/flutter_secure_shield](https://github.com/KasunHasanga/flutter_secure_shield)
-
-## License
-
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
