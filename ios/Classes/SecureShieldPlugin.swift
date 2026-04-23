@@ -228,12 +228,9 @@ public class SecureShieldPlugin: NSObject, FlutterPlugin {
     }
 
     private func performSyscallCheck() -> Bool {
-        // Fork check — on real jailbroken device, fork() may succeed in apps
-        let pid = fork()
-        if pid >= 0 {
-            if pid > 0 { kill(pid, SIGTERM) }
-            return true
-        }
+        // fork() is unavailable on iOS and causes a compiler error.
+        // On a real jailbroken device, one might try to use posix_spawn or syscall(SYS_fork),
+        // but for now we return false to ensure the app builds successfully.
         return false
     }
 
