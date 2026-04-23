@@ -26,7 +26,7 @@ Add `flutter_secure_shield` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_secure_shield: ^1.0.0
+  flutter_secure_shield: ^1.0.2
 ```
 
 Run `flutter pub get` to install.
@@ -36,7 +36,7 @@ Run `flutter pub get` to install.
 SecureShield uses a combination of **Native Method Channels** and deep system calls to verify device integrity:
 
 - **Android**: Scans for known root binaries, check build tags (test-keys), detects package managers like Magisk, and monitors for hooking framework signatures in the runtime.
-- **iOS**: Checks for file system permissions in restricted areas, looks for common jailbreak apps (Cydia, Sileo, etc.), and tests for `fork()` capabilities which are usually restricted in the sandbox.
+- **iOS**: Checks for file system permissions in restricted areas, looks for common jailbreak apps (Cydia, Sileo, etc.), and tests for sandbox integrity via various system-level checks.
 - **Unified API**: All native data is mapped into a consistent Dart model, making it easy to handle security logic in your app.
 
 ## 📖 Usage

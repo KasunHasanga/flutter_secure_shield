@@ -1,3 +1,8 @@
+## 1.0.2
+
+*   Fixed Swift compiler error: 'fork()' is unavailable on iOS/Simulator.
+*   Improved build stability for modern iOS versions and simulators.
+
 ## 1.0.1
 
 *   Removed unused platform support (macOS, Windows, Linux, Web) to focus on Android and iOS.

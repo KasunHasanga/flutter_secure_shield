@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'flutter_secure_shield'
-  s.version          = '1.0.0'
+  s.version          = '1.0.2'
   s.summary          = 'Advanced root and jailbreak detection Flutter plugin.'
   s.description      = <<-DESC
     SecureShield provides comprehensive root detection (Android) and
