@@ -1,3 +1,7 @@
+## 1.0.3
+
+*   Fixed Swift Package Manager (SPM) integration to comply with the latest pub.dev validation requirements.
+
 ## 1.0.2
 
 *   Fixed Swift compiler error: 'fork()' is unavailable on iOS/Simulator.
