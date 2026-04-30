@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'SecureShield' => 'dev@secureshield.io' }
   s.source           = { :path => '.' }
-  s.source_files     = 'Classes/**/*'
+  s.source_files     = 'flutter_secure_shield/Sources/flutter_secure_shield/**/*.swift'
   s.dependency 'Flutter'
   s.platform         = :ios, '13.0'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
