@@ -2,7 +2,7 @@ name: example
 description: Demonstrates how to use the flutter_secure_shield plugin.
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
