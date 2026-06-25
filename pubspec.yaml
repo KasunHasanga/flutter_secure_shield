@@ -1,6 +1,6 @@
 name: flutter_secure_shield
 description: Advanced root detection and jailbreak detection Flutter plugin with comprehensive security checks.
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/KasunHasanga/flutter_secure_shield
 
 environment:
@@ -23,4 +23,4 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^6.0.0

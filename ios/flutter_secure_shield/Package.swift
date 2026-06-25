@@ -4,17 +4,20 @@ import PackageDescription
 let package = Package(
     name: "flutter_secure_shield",
     platforms: [
-        .iOS(.v13)
+        .iOS("13.0")
     ],
     products: [
         .library(name: "flutter-secure-shield", targets: ["flutter_secure_shield"])
     ],
-    dependencies: [],
+    dependencies: [
+        .package(name: "FlutterFramework", path: "../FlutterFramework")
+    ],
     targets: [
         .target(
             name: "flutter_secure_shield",
-            dependencies: [],
-            path: "Classes",
+            dependencies: [
+                .product(name: "FlutterFramework", package: "FlutterFramework")
+            ],
             resources: []
         )
     ]
